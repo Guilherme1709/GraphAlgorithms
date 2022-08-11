@@ -35,7 +35,45 @@ public class graph {
         return degree;
     }
 
+    public int higestDegree() {
+        int higestDegree = 0;
 
+        for(int i = 0; i < adjMatrix.length; ++i) {
+            int higest = this.degree(i);
+            if(higestDegree < higest) {
+                higestDegree = higest;
+            }
+        }
+
+        return higestDegree;
+    }
+
+    public int lowestDegree() {
+        int lowestDegree = adjMatrix.length;
+
+        for(int i = 0; i < adjMatrix.length; ++i) {
+            int lowest = this.degree(i);
+            if(lowestDegree > lowest) {
+                lowestDegree = lowest;
+            }
+        }
+
+        return lowestDegree;
+    }
+
+    public graph complement() {
+        graph newGraph = new graph(countNodes);
+
+        for(int i = 0; i < this.adjMatrix.length; ++i) {
+            for(int j = 0; j < this.adjMatrix[i].length; ++j){
+                if(adjMatrix[i][j] == 0 && i != j) {
+                    newGraph.addEdge(i, j, 1);
+                }
+            }
+        }
+
+        return newGraph;
+    }
 
     /**
      * @return int return the countNodes
