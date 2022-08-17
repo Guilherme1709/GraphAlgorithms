@@ -8,6 +8,7 @@ public class graph {
         this.adjMatrix = new int[countNodes][countNodes];
     }
 
+    
     public void addEdge(int source, int sink, int weight) {
         if(source < 0 || source > this.countNodes - 1
             || sink < 0 || sink > this.countNodes - 1
@@ -18,6 +19,7 @@ public class graph {
         this.adjMatrix[source][sink] = weight;
         this.countEdges++;
     }
+
 
     public int degree(int node) {
         if(node < 0 || node > this.countNodes - 1) {
@@ -35,6 +37,7 @@ public class graph {
         return degree;
     }
 
+
     public int higestDegree() {
         int higestDegree = 0;
 
@@ -48,6 +51,7 @@ public class graph {
         return higestDegree;
     }
 
+
     public int lowestDegree() {
         int lowestDegree = adjMatrix.length;
 
@@ -60,6 +64,7 @@ public class graph {
 
         return lowestDegree;
     }
+
 
     public graph complement() {
         graph newGraph = new graph(countNodes);
@@ -75,26 +80,45 @@ public class graph {
         return newGraph;
     }
 
-    /**
-     * @return int return the countNodes
-     */
+
+    public float density() {
+        float d = 0;
+
+        d = this.countEdges / this.countNodes * (this.countNodes-1);
+
+        return d;
+    }
+
+
+    public boolean subGraph(graph g2) {
+        if(g2.countNodes > this.countNodes || g2.countEdges > this.countEdges) {
+            return false;
+        } 
+
+        for(int i = 0; i < g2.adjMatrix.length; ++i) {
+            for(int j = 0; j < g2.adjMatrix[i].length; ++j) {
+                if(g2.adjMatrix[i][j] != 0 && this.adjMatrix[i][j] == 0) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+
     public int getCountNodes() {
         return countNodes;
     }
 
-    /**
-     * @return int return the countEdges
-     */
     public int getCountEdges() {
         return countEdges;
     }
 
-    /**
-     * @return int [][] return the adjMatrix
-     */
     public int [][] getAdjMatrix() {
         return adjMatrix;
     }
+
 
     public String toString() {
         String str = "";
