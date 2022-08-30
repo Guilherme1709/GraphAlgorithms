@@ -170,26 +170,6 @@ public class graph {
         return R;
     }
 
-    //algoritmo DFS recursivo
-    public ArrayList<Integer> recursiveDfs(Integer s) {
-        int[] desc = new int[this.countNodes];
-
-        ArrayList<Integer> R = new ArrayList<>();
-        R.add(s);
-
-        desc[s] = 1;
-
-        int u = R.get(R.size() - 1);
-
-        for(int v = 0; v < this.adjMatrix[u].length; ++v) {
-            if(desc[v] == 0) {
-                recursiveDfs(s);
-            } 
-        }
-
-        return R;
-    }
-
     //algoritmo para adicionar um vértice não orientado a um grafo
     public void addEdgeUnoriented(int u, int v, int w) {
         if (u < 0 || u > this.countNodes - 1
@@ -259,4 +239,33 @@ public class graph {
 
         return str;
     } 
+
+    public boolean noOriented() {
+        for(int i = 0; i < this.adjMatrix.length; ++i) {
+            for(int j = i+1; j < this.adjMatrix[i].length; ++j) {
+                if(adjMatrix[i][j] != adjMatrix[j][i]) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    //algoritmo DFS recursivo
+    public ArrayList<Integer> dfsRec(int s) {
+        int[] desc = new int[this.countNodes];
+        ArrayList<Integer> R = new ArrayList<>();
+        dfsRecAux(s, desc, R);
+        return R;
+      }
+    public void dfsRecAux(int u, int[] desc, ArrayList<Integer> R) {
+        desc[u] = 1;
+        R.add(u);
+        for (int v = 0; v < this.adjMatrix[u].length; ++v) {
+          if (this.adjMatrix[u][v] != 0 && desc[v] == 0) {
+            dfsRecAux(v, desc, R);
+          }
+        }
+      }
 }
