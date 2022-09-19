@@ -14,6 +14,7 @@ public class graph {
         this.adjMatrix = new int[countNodes][countNodes];
     }
 
+
     //função para adicionar um vértice em um grafo
     public void addEdge(int u, int v, int w) {
         if(u < 0 || u > this.countNodes - 1
@@ -25,6 +26,7 @@ public class graph {
         this.adjMatrix[u][v] = w;
         this.countEdges++;
     }
+
 
     //algoritmo para detectar o grau de um grafo
     public int degree(int node) {
@@ -43,6 +45,7 @@ public class graph {
         return degree;
     }
 
+
     //algoritmo para detectar o maior grau de um grafo
     public int higestDegree() {
         int higestDegree = 0;
@@ -57,6 +60,7 @@ public class graph {
         return higestDegree;
     }
 
+
     //algoritmo para saber o menor grau de um grafo
     public int lowestDegree() {
         int lowestDegree = adjMatrix.length;
@@ -70,6 +74,7 @@ public class graph {
 
         return lowestDegree;
     }
+
 
     //algoritmo para saber o complemento de um grafo
     public graph complement() {
@@ -86,6 +91,7 @@ public class graph {
         return newGraph;
     }
 
+
     //algoritmo para saber a densidade de um grafo
     public float density() {
         float d = 0;
@@ -94,6 +100,7 @@ public class graph {
 
         return d;
     }
+
 
     //algoritmo para detectar subgrafos
     public boolean subGraph(graph g2) {
@@ -111,6 +118,7 @@ public class graph {
 
         return true;
     }
+
 
     //algoritmo BFS
     public ArrayList<Integer> bfs(int s) { // busca em largura
@@ -135,6 +143,7 @@ public class graph {
         }
         return R;
       }
+
 
     //algoritmo DFS
     public ArrayList<Integer> dfs(Integer s) {
@@ -170,6 +179,7 @@ public class graph {
         return R;
     }
 
+
     //algoritmo para adicionar um vértice não orientado a um grafo
     public void addEdgeUnoriented(int u, int v, int w) {
         if (u < 0 || u > this.countNodes - 1
@@ -183,10 +193,12 @@ public class graph {
         this.countEdges += 2;
     }
 
+
     //algoritmo para saber as conectividades de um grafo
     public boolean connected() {
         return this.bfs(0).size() == this.countNodes;
     }
+
 
     //algoritmo para ler um grafo em um arquivo externo
     public graph(String fileName) throws IOException {
@@ -240,6 +252,7 @@ public class graph {
         return str;
     } 
 
+    //algoritmo grafo não orientado
     public boolean noOriented() {
         for(int i = 0; i < this.adjMatrix.length; ++i) {
             for(int j = i+1; j < this.adjMatrix[i].length; ++j) {
@@ -252,20 +265,72 @@ public class graph {
         return true;
     }
 
+
     //algoritmo DFS recursivo
     public ArrayList<Integer> dfsRec(int s) {
         int[] desc = new int[this.countNodes];
         ArrayList<Integer> R = new ArrayList<>();
+
         dfsRecAux(s, desc, R);
+
         return R;
-      }
+    }
+
     public void dfsRecAux(int u, int[] desc, ArrayList<Integer> R) {
         desc[u] = 1;
         R.add(u);
+
         for (int v = 0; v < this.adjMatrix[u].length; ++v) {
           if (this.adjMatrix[u][v] != 0 && desc[v] == 0) {
             dfsRecAux(v, desc, R);
           }
         }
-      }
+    }
+
+    //algoritmo de Floyd Warshall
+    public void Floyd_Warshall() {
+        int[][] dist = new int [this.countNodes][this.countNodes];
+        Integer[][] pred = new Integer [this.countNodes][this.countNodes];
+        int i, j, k = 0;
+
+        for(i = 0; i < this.countNodes - 1; ++i) {
+            for(j = 0; j < this.countNodes - 1; ++j) {
+                if(i == j) {
+                    dist[i][j] = 0;
+                } /*else if (){
+                    dist[i][j] = w(i,j)
+                    pred[i][j] = i;*/
+                else {
+                    dist[i][j] = 1000000000;
+                    pred[i][j] = null;
+                }
+            }
+        }
+
+        for(k = 0; k < this.countNodes - 1; ++k) {
+            for(i = 0; i < this.countNodes - 1; ++i) {
+                for(j = 0; i < this.countNodes - 1; ++j) {
+                    if(dist[i][j] > dist[i][k] + dist[k][j]) {
+                        dist[i][j] = dist[i][k] + dist[k][j];
+                        pred[i][j] = pred[k][j];
+                    }
+                }
+            }
+        }
+
+        //imprime matrizes
+        for(i = 0; i < dist.length; i++) {
+            for(j = 0; j < dist[i].length - 1; j++) {
+                System.out.print(dist[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+        for(i = 0; i < pred.length; i++) {
+            for(j = 0; j < pred[i].length - 1; j++) {
+                System.out.print(pred[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
 }
