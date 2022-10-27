@@ -3,7 +3,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedList;
 
 public class graphList {
 
@@ -12,6 +12,23 @@ public class graphList {
     private ArrayList<ArrayList<Edge>> adjList;
     private ArrayList<Edge> edgeList;
     private static final int INF = 999999;
+
+    private int getLowerDistance(ArrayList<Integer> eddgesList, int[] distancesList) {
+        int lowerDistance = INF;
+        int edge = 0;
+    
+        for (int i = 0; i < eddgesList.size(); i++) {
+          if (distancesList[i] < lowerDistance) {
+            edge = eddgesList.get(i);
+          }
+        }
+    
+        return edge;
+      }
+    
+      private ArrayList<Edge> getAdjEdges(int edge) {
+        return this.adjList.get(edge);
+      }
 
     public graphList(int countNodes) {
         this.countNodes = countNodes;
@@ -163,6 +180,7 @@ public class graphList {
         return R;
     }
 
+
     public ArrayList<Integer> dfs(int s) {
         int[] desc = new int[this.countNodes];
         ArrayList<Integer> S = new ArrayList<>();
@@ -191,9 +209,11 @@ public class graphList {
         return R;
     }
 
+
     public boolean connected() {
         return this.bfs(0).size() == this.countNodes;
     }
+
 
     public boolean isOriented() {
         for (int u = 0; u < this.adjList.size(); ++u) {
@@ -341,6 +361,9 @@ public class graphList {
 
     
     public void Bellman_Ford(int s, int t) {
+        long startTime = System.currentTimeMillis();
+        LinkedList<Integer> Q = new LinkedList<>();
+
         int[] dist = new int[this.countNodes];
         int[] pred = new int[this.countNodes];
 
@@ -348,7 +371,6 @@ public class graphList {
             dist[v] = INF;
             pred[v] = -1;
         }
-
         dist[s] = 0;
 
         for(int i = 0; i < this.countNodes -1; ++i) {
@@ -362,11 +384,29 @@ public class graphList {
             }
         }
 
-        System.out.printf("Bellman-Ford\nDistância de %d até %d: %d\n\n", s, t, dist[t]);
+        System.out.printf("*Bellman-Ford*\n- Distância de %d até %d -> %d", s, t, dist[t]);
+        System.out.println("\n- Caminho encontrado -> ");
+
+        int aux = t;
+        while (aux != s) {
+            Q.addFirst(aux);
+            aux = pred[aux];
+        }
+
+        Q.addFirst(s);
+        System.out.println(Q);
+
+        long endTime = System.currentTimeMillis();
+        float timeElapsed = endTime - startTime;
+
+        System.out.println("- Tempo de execução em segundos -> " + (timeElapsed / 1000) + "\n");
     }
 
 
     public void Bellman_Ford_Melhorado(int s, int t) {
+        long startTime = System.currentTimeMillis();
+        LinkedList<Integer> Q = new LinkedList<>();
+
         int[] dist = new int[this.countNodes];
         int[] pred = new int[this.countNodes];
 
@@ -395,39 +435,74 @@ public class graphList {
             }
         }
 
-        System.out.printf("Bellman Melhorado\nDistância de %d até %d: %d\n\n", s, t, dist[t]);
+        System.out.printf("*Bellman Melhorado*\n- Distância de %d até %d -> %d", s, t, dist[t]);
+        System.out.println("\n- Caminho encontrado -> ");
+
+        int aux = t;
+
+        while (aux != s) {
+            Q.addFirst(aux);
+            aux = pred[aux];
+        }
+
+        Q.addFirst(s);
+        System.out.println(Q);
+
+        long endTime = System.currentTimeMillis();
+        float timeElapsed = endTime - startTime;
+
+        System.out.println("- Tempo de execução em segundos -> " + (timeElapsed / 1000) + "\n");
     }
 
 
     public void Dijkstra(int s, int t) {
+        long startTime = System.currentTimeMillis();
+        LinkedList<Integer> R = new LinkedList<>();
+
         int[] dist = new int[this.countNodes];
         int[] pred = new int[this.countNodes];
         ArrayList<Integer> Q = new ArrayList<>();
-
-        for(int v = 0; v < this.countNodes; ++v) {
-            dist[v] = INF;
-            pred[v] = -1;
+    
+        for (int v = 0; v < this.countNodes; ++v) {
+          dist[v] = INF;
+          pred[v] = -1;
         }
-
+    
         dist[s] = 0;
-
-        for(int v = 0; v < this.countNodes; ++v) {
-            Q.add(v);
+    
+        for (int v = 0; v < this.countNodes; ++v) {
+          Q.add(v);
         }
-
-        while(Q.size() != 0) {
-            int u = Collections.min(Q);
-            Q.remove((Integer)u);
-
-            for (int idx = 0; idx < this.adjList.get(u).size(); ++idx) {
-                int v = this.adjList.get(u).get(idx).getSink();
-                if(dist[v] > dist[u] + this.edgeList.get(u).getWeight()) {
-                    dist[v] = dist[u] + this.edgeList.get(u).getWeight();
-                    pred[v] = u;
-                }
+    
+        while (Q.size() != 0) {
+          int u = getLowerDistance(Q, dist);
+          Q.remove((Integer) u);
+    
+          for (Edge e : getAdjEdges(u)) {
+            if (dist[e.getSink()] > dist[u] + e.getWeight()) {
+              dist[e.getSink()] = dist[u] + e.getWeight();
+              pred[e.getSink()] = u;
             }
+          }
+        }
+    
+        System.out.printf("*Dijkstra*\n- Distância de %d até %d -> %d", s, t, dist[t]);
+        System.out.println("\n- Caminho encontrado -> ");
+
+        int aux = t;
+        
+        while (aux != s) {
+            R.addFirst(aux);
+            aux = pred[aux];
         }
 
-        System.out.printf("Dijkstra\nDistância de %d até %d: %d\n\n", s, t, dist[t]);
-    }
+        R.addFirst(s);
+
+        System.out.println(R);
+
+        long endTime = System.currentTimeMillis();
+        float timeElapsed = endTime - startTime;
+
+        System.out.println("- Tempo de execução em segundos -> " + (timeElapsed / 1000) + "\n");
+      }
 }

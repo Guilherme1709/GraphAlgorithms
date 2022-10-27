@@ -239,7 +239,9 @@ public class graphMatrix {
     }
 
 
-    public ArrayList<Integer> floydWarshall(int s, int t) {
+    public void floydWarshall(int s, int t) {
+        long startTime = System.currentTimeMillis();
+
         int[][] dist = new int[this.countNodes][this.countNodes];
         int[][] pred = new int[this.countNodes][this.countNodes];
 
@@ -269,7 +271,8 @@ public class graphMatrix {
             }
         }
         // Recovering paths
-        System.out.printf("Floyd-Warshall\nDistância de %d até %d: %d", s, t, dist[s][t]);
+        System.out.printf("*Floyd-Warshall*\n- Distância de %d até %d -> %d", s, t, dist[s][t]);
+        System.out.println("\nCaminho encontrado ->");
         ArrayList<Integer> C = new ArrayList<Integer>();
 
         C.add(t);
@@ -278,7 +281,12 @@ public class graphMatrix {
             aux = pred[s][aux];
             C.add(0, aux);
         }
-        return C;
+        System.out.print(C);
+
+        long endTime = System.currentTimeMillis();
+        float timeElapsed = endTime - startTime;
+
+        System.out.println("\nTempo de execução em segundos -> " + (timeElapsed / 1000));
     }
 
 

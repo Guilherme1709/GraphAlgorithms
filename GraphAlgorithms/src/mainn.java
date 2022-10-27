@@ -2,13 +2,19 @@ import java.io.IOException;
 
 class App {
     public static void main(String[] args) throws IOException {
-        graphList g = new graphList("C:\\Users\\guilh\\OneDrive\\Documentos\\Faculdade\\Períodos\\3º Período\\AEDS III\\Codes\\GraphAlgorithms\\files\\teste.txt");
-        graphMatrix g2 = new graphMatrix("C:\\Users\\guilh\\OneDrive\\Documentos\\Faculdade\\Períodos\\3º Período\\AEDS III\\Codes\\GraphAlgorithms\\files\\teste.txt");
-        System.out.println(g);
-        g.Bellman_Ford(3, 0);
-        g.Bellman_Ford_Melhorado(3, 0);
-        g.Dijkstra(3, 0);
-        g2.floydWarshall(3, 0);
+        /*graphList face1 = new graphList("C:\\Users\\guilh\\OneDrive\\Documentos\\Faculdade\\Períodos\\3º Período\\AEDS III\\Codes\\GraphAlgorithms\\cm\\facebook_combined.txt");
+        graphMatrix face2 = new graphMatrix("C:\\Users\\guilh\\OneDrive\\Documentos\\Faculdade\\Períodos\\3º Período\\AEDS III\\Codes\\GraphAlgorithms\\cm\\facebook_combined.txt");
+        face1.Bellman_Ford(0, 100);
+        face1.Bellman_Ford_Melhorado(0, 100);
+        face1.Dijkstra(0, 100);
+        face2.floydWarshall(0, 100);*/
+
+        graphList ny1 = new graphList("C:\\Users\\guilh\\OneDrive\\Documentos\\Faculdade\\Períodos\\3º Período\\AEDS III\\Codes\\GraphAlgorithms\\cm\\toy.txt");
+        graphMatrix ny2 = new graphMatrix("C:\\Users\\guilh\\OneDrive\\Documentos\\Faculdade\\Períodos\\3º Período\\AEDS III\\Codes\\GraphAlgorithms\\cm\\toy.txt");
+        ny1.Bellman_Ford(0, 4);
+        ny1.Bellman_Ford_Melhorado(0, 4);
+        ny1.Dijkstra(0, 4);
+        ny2.floydWarshall(0, 4);
 
         // System.out.println(g.isOriented());
         // System.out.println(g1.prim());
