@@ -12,19 +12,6 @@ public class graphList {
     private ArrayList<ArrayList<Edge>> adjList;
     private ArrayList<Edge> edgeList;
     private static final int INF = 999999;
-
-    private int getLowerDistance(ArrayList<Integer> eddgesList, int[] distancesList) {
-        int lowerDistance = INF;
-        int edge = 0;
-    
-        for (int i = 0; i < eddgesList.size(); i++) {
-          if (distancesList[i] < lowerDistance) {
-            edge = eddgesList.get(i);
-          }
-        }
-    
-        return edge;
-      }
     
       private ArrayList<Edge> getAdjEdges(int edge) {
         return this.adjList.get(edge);
@@ -371,6 +358,7 @@ public class graphList {
             dist[v] = INF;
             pred[v] = -1;
         }
+        
         dist[s] = 0;
 
         for(int i = 0; i < this.countNodes -1; ++i) {
@@ -454,6 +442,19 @@ public class graphList {
         System.out.println("- Tempo de execução em segundos -> " + (timeElapsed / 1000) + "\n");
     }
 
+
+    private int getLowerDistance(ArrayList<Integer> eddgesList, int[] distancesList) {
+        int lowerDistance = INF;
+        int edge = 0;
+    
+        for (int i = 0; i < eddgesList.size(); i++) {
+          if (distancesList[i] < lowerDistance) {
+            edge = eddgesList.get(i);
+          }
+        }
+    
+        return edge;
+    }
 
     public void Dijkstra(int s, int t) {
         long startTime = System.currentTimeMillis();
